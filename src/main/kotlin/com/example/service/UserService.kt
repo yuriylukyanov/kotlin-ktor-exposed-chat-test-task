@@ -1,6 +1,7 @@
 package com.example.service
 
 import com.example.dto.AddUser
+import com.example.dto.UpdateUser
 import com.example.exception.BadRequestException
 import com.example.model.User
 import com.example.repository.UserRepository
@@ -25,5 +26,26 @@ class UserService(val repository: UserRepository) {
             throw BadRequestException("username " + dto.username + " already exists");
         }
 
+    }
+
+    suspend fun update(dto: UpdateUser): UUID {
+        if (dto.username.isNullOrEmpty()) {
+            throw BadRequestException("empty username")
+        }
+
+        if (dto.id == null) {
+            throw BadRequestException("empty id")
+        }
+
+        if (!repository.existsById(dto.id)) {
+            throw BadRequestException("user not found")
+        }
+
+        if (repository.existsByUsername(dto.username)) {
+            throw BadRequestException("username " + dto.username + " already exists")
+        }
+
+        repository.update(dto)
+        return dto.id
     }
 }
