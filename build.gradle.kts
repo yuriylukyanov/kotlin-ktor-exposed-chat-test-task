@@ -22,7 +22,6 @@ application {
 
 repositories {
     mavenCentral()
-    maven("https://repo.perfectdreams.net/")
 }
 
 dependencies {
@@ -34,13 +33,13 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json-jvm:$ktor_version")
     implementation("io.ktor:ktor-server-status-pages:$ktor_version")
     implementation("org.postgresql:postgresql:$postgres_version")
-    implementation("com.h2database:h2:$h2_version")
     implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
+    implementation("org.jetbrains.exposed:exposed-dao:$exposed_version")
+    implementation("org.jetbrains.exposed:exposed-jodatime:$exposed_version")
     implementation("io.ktor:ktor-server-netty-jvm:$ktor_version")
     implementation("ch.qos.logback:logback-classic:$logback_version")
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
-    implementation("net.perfectdreams.exposedpowerutils:postgres-java-time:1.2.0")
     implementation("com.zaxxer:HikariCP:5.0.1")
 }

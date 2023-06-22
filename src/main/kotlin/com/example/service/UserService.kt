@@ -15,13 +15,9 @@ class UserService(val repository: UserRepository) {
         }
 
         if (!repository.existsByUsername(dto.username)){
-            val user = User(
-                UUID.randomUUID(),
-                dto.username.lowercase(),
-                OffsetDateTime.now()
-            );
-            repository.create(user);
-            return user.id;
+
+            val user = repository.create(dto);
+            return user.id.value;
         } else {
             throw BadRequestException("username " + dto.username + " already exists");
         }

@@ -1,6 +1,7 @@
 package com.example.repository
 
 import com.example.database.UserTable
+import com.example.dto.AddUser
 import com.example.dto.UpdateUser
 import com.example.model.User
 import org.jetbrains.exposed.sql.insert
@@ -8,17 +9,21 @@ import org.jetbrains.exposed.sql.lowerCase
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
+import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
+import java.time.OffsetDateTime
 import java.util.*
 
 class UserRepository {
-    suspend fun create(user: User) {
+    suspend fun create(dto: AddUser): User {
+        var user: User? = null;
         transaction {
-            UserTable.insert {
-                it[id] = user.id
-                it[username] = user.username
-                it[createdAt] = user.createdAt.toInstant()
+            user = User.new(UUID.randomUUID()) {
+                username = dto.username!!.lowercase()
+                createdAt = DateTime.now(DateTimeZone.UTC)
             }
         }
+        return user!!
     }
 
     suspend fun update(user: UpdateUser) {
