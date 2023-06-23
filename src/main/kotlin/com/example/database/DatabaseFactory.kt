@@ -20,6 +20,14 @@ object DatabaseFactory {
 //                it[city] = "Delhi"
 //            }
             //SchemaUtils.create(IssueTable)
+
+            SchemaUtils.create(ChatTable)
+            SchemaUtils.statementsRequiredToActualizeScheme(ChatTable)
+            SchemaUtils.createMissingTablesAndColumns(ChatTable)
+
+            SchemaUtils.create(ChatMemberTable)
+            SchemaUtils.statementsRequiredToActualizeScheme(ChatMemberTable)
+            SchemaUtils.createMissingTablesAndColumns(ChatMemberTable)
         }
     }
 

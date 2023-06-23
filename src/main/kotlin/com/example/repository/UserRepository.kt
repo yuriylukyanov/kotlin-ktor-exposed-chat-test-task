@@ -16,18 +16,16 @@ import java.util.*
 
 class UserRepository {
     suspend fun create(dto: AddUser): User {
-        var user: User? = null;
-        transaction {
-            user = User.new(UUID.randomUUID()) {
+        return transaction {
+            User.new(UUID.randomUUID()) {
                 username = dto.username!!.lowercase()
                 createdAt = DateTime.now(DateTimeZone.UTC)
             }
         }
-        return user!!
     }
 
     suspend fun update(user: UpdateUser) {
-        transaction {
+        return transaction {
             val usernameLowercase = user.username!!.lowercase()
             UserTable.update({UserTable.id eq user.id!!})
             {
@@ -44,8 +42,10 @@ class UserRepository {
     }
 
     suspend fun existsById(id: UUID): Boolean {
-        return transaction {
-            UserTable.select { UserTable.id eq id }.count() != 0L;
-        }
+        return transaction { UserTable.select { UserTable.id eq id }.count() != 0L; }
+    }
+
+    suspend fun findByIdIn(users: List<UUID>): List<User> {
+        return transaction { User.forIds(users).toList() };
     }
 }

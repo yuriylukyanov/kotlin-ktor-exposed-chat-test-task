@@ -6,8 +6,11 @@ import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import com.example.plugins.*
+import com.example.repository.ChatRepository
 import com.example.repository.UserRepository
+import com.example.routing.configureChatRouting
 import com.example.routing.configureUserRouting
+import com.example.service.ChatService
 import com.example.service.UserService
 import io.ktor.http.*
 import io.ktor.server.plugins.statuspages.*
@@ -24,9 +27,9 @@ fun Application.module() {
 
     configureHTTP()
     configureSerialization()
-    //configureDatabases()
     configureRouting()
     configureUserRouting(UserService(UserRepository()))
+    configureChatRouting(ChatService(UserRepository(), ChatRepository()))
     install(StatusPages) {
         exception<Throwable> { call, cause ->
             if (cause is BadRequestException) {

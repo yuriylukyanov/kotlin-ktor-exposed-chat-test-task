@@ -15,7 +15,6 @@ class UserService(val repository: UserRepository) {
         }
 
         if (!repository.existsByUsername(dto.username)){
-
             val user = repository.create(dto);
             return user.id.value;
         } else {
