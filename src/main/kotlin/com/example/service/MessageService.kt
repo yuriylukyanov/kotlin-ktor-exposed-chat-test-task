@@ -3,6 +3,7 @@ package com.example.service
 import com.example.dto.AddMessage
 import com.example.dto.EntryCountMessage
 import com.example.dto.GetMessage
+import com.example.dto.MessageResponse
 import com.example.exception.BadRequestException
 import com.example.repository.ChatRepository
 import com.example.repository.MessageRepository
@@ -24,12 +25,10 @@ class MessageService(
         return message.id.value
     }
 
-    suspend fun get(dto: GetMessage): List<String> {
+    suspend fun get(dto: GetMessage): Collection<MessageResponse> {
         if (dto.chat == null) throw BadRequestException("empty chat")
         val messages = messageRepository.get(dto);
-        return messages.map{
-            it.text
-        }
+        return messages
     }
 
     suspend fun entryCount(dto: EntryCountMessage): Long {

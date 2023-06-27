@@ -42,4 +42,5 @@ dependencies {
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
     implementation("com.zaxxer:HikariCP:5.0.1")
+    implementation("com.fatboyindustrial.gson-jodatime-serialisers:gson-jodatime-serialisers:1.8.0")
 }

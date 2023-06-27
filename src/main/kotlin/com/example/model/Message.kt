@@ -13,4 +13,6 @@ class Message(id: EntityID<UUID>): UUIDEntity(id) {
     var createdAt by MessageTable.createdAt
     var authorId by MessageTable.authorId
     var chatId by MessageTable.chatId
+
+    var chatMember by ChatMember referencedOn MessageTable.authorId
 }
