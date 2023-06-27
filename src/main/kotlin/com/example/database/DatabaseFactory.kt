@@ -28,6 +28,10 @@ object DatabaseFactory {
             SchemaUtils.create(ChatMemberTable)
             SchemaUtils.statementsRequiredToActualizeScheme(ChatMemberTable)
             SchemaUtils.createMissingTablesAndColumns(ChatMemberTable)
+
+            SchemaUtils.create(MessageTable)
+            SchemaUtils.statementsRequiredToActualizeScheme(MessageTable)
+            SchemaUtils.createMissingTablesAndColumns(MessageTable)
         }
     }
 

@@ -4,7 +4,6 @@ import com.example.dto.AddChat
 import com.example.dto.ChatResponse
 import com.example.dto.GetChat
 import com.example.exception.BadRequestException
-import com.example.model.Chat
 import com.example.repository.ChatRepository
 import com.example.repository.UserRepository
 import java.util.*
@@ -26,7 +25,7 @@ class ChatService(val userRepository: UserRepository, val chatRepository: ChatRe
         if(dto.user == null)
             throw BadRequestException("empty user")
         return chatRepository.getByMemberUserId(dto)
-            .map {ChatResponse(it.id.value, it.name)}
+            .map { ChatResponse(it.id.value, it.name) }
             .toList();
     }
 }

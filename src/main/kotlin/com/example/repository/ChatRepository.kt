@@ -2,6 +2,7 @@ package com.example.repository
 
 import com.example.database.ChatMemberTable
 import com.example.database.ChatTable
+import com.example.database.UserTable
 import com.example.dto.GetChat
 import com.example.model.Chat
 import com.example.model.User
@@ -34,4 +35,28 @@ class ChatRepository {
             Chat.wrapRows(query).toList()
         }
     }
+
+    fun findAllIdsByIds(ids: List<UUID>): List<UUID> {
+        return transaction {
+            ChatTable.slice(ChatTable.id)
+                .select {
+                    ChatTable.id inList(ids)
+                }
+                .map { it[ChatTable.id].value }
+                .toList()
+        }
+    }
+
+    suspend fun getMemberIdsByChatIdAndUserIds(chatId: UUID, userIds: Collection<UUID>): List<UUID> {
+        return transaction {
+            ChatMemberTable.slice(ChatMemberTable.id)
+                .select {
+                    ChatMemberTable.chatId eq chatId
+                    ChatMemberTable.userId inList(userIds)
+                }
+                .map { it[ChatMemberTable.id].value }
+                .toList()
+        }
+    }
 }
+
