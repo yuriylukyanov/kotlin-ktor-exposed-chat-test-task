@@ -4,6 +4,7 @@ val logback_version: String by project
 val postgres_version : String by project
 val h2_version : String by project
 val exposed_version : String by project
+val koin_version : String by project
 
 plugins {
     kotlin("jvm") version "1.8.22"
@@ -43,4 +44,6 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
     implementation("com.zaxxer:HikariCP:5.0.1")
     implementation("com.fatboyindustrial.gson-jodatime-serialisers:gson-jodatime-serialisers:1.8.0")
+    implementation ("io.insert-koin:koin-ktor:$koin_version")
+    implementation ("io.insert-koin:koin-logger-slf4j:$koin_version")
 }

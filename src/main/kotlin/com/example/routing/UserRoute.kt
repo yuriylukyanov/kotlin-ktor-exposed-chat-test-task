@@ -8,10 +8,12 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.koin.java.KoinJavaComponent.inject
 
-fun Application.configureUserRouting(service: UserService) {
+fun Application.configureUserRouting() {
     routing {
         route("users") {
+            val service: UserService by inject(UserService::class.java)
             post("add") {
                 val user = call.receive<AddUser>()
                 val id = service.create(user)

@@ -16,6 +16,10 @@ import com.example.service.UserService
 import io.ktor.http.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.response.*
+import org.koin.ktor.plugin.Koin
+import org.koin.logger.SLF4JLogger
+import org.koin.dsl.bind
+import org.koin.dsl.module
 
 fun main(args: Array<String>) = io.ktor.server.netty.EngineMain.main(args)
 
@@ -24,13 +28,27 @@ fun main(args: Array<String>) = io.ktor.server.netty.EngineMain.main(args)
 fun Application.module() {
     DatabaseFactory.init()
 
+    install(Koin) {
+        SLF4JLogger()
+
+        val chatModule = module {
+            factory { UserRepository() } bind UserRepository::class
+            factory { ChatRepository() } bind ChatRepository::class
+            factory { MessageRepository() } bind MessageRepository::class
+            factory { UserService(get()) } bind UserService::class
+            factory { ChatService(get(), get()) } bind ChatService::class
+            factory { MessageService(get(), get()) } bind MessageService::class
+        }
+
+        modules(chatModule)
+    }
 
     configureHTTP()
     configureSerialization()
     configureRouting()
-    configureUserRouting(UserService(UserRepository()))
-    configureChatRouting(ChatService(UserRepository(), ChatRepository()))
-    configureMessageRouting(MessageService(ChatRepository(), MessageRepository()))
+    configureUserRouting()
+    configureChatRouting()
+    configureMessageRouting()
     install(StatusPages) {
         exception<Throwable> { call, cause ->
             if (cause is BadRequestException) {
